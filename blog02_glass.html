@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT 전문가 - 포트폴리오 프로필</title>
+    <meta name="description" content="IT 개발 및 운영 경력을 가진 전문가의 프리미엄 포트폴리오 자기소개 페이지입니다.">
+
+    <!-- SEO & Metadata -->
+    <meta property="og:title" content="IT 스페셜리스트 포트폴리오">
+    <meta property="og:description" content="30년 경력의 IT 개발 및 운영 경력을 가진 전문가의 소개 페이지입니다.">
+    <meta property="og:type" content="website">
+
+    <!-- Pretendard Font for premium Korean typography -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Light Mode Variables */
+            --bg-gradient: radial-gradient(at 0% 0%, #e0f2fe 0px, transparent 55%), 
+                           radial-gradient(at 100% 0%, #fdf4ff 0px, transparent 55%), 
+                           radial-gradient(at 50% 100%, #f0fdf4 0px, transparent 55%), 
+                           #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.4);
+            --card-border: rgba(255, 255, 255, 0.6);
+            --card-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            --text-color: #0f172a;
+            --text-muted: #475569;
+            --accent-gradient: linear-gradient(135deg, #0ea5e9, #10b981);
+            --accent-hover: linear-gradient(135deg, #0369a1, #047857);
+            --glow-color: rgba(14, 165, 233, 0.12);
+            --shadow-color: rgba(15, 23, 42, 0.04);
+            
+            --orb-1-color: rgba(56, 189, 248, 0.3);
+            --orb-2-color: rgba(244, 114, 182, 0.2);
+            --orb-3-color: rgba(52, 211, 153, 0.25);
+            --orb-opacity: 0.7;
+            --orb-blend: multiply;
+            --orb-filter: blur(80px);
+            
+            --badge-bg: rgba(14, 165, 233, 0.08);
+            --badge-border: rgba(14, 165, 233, 0.18);
+            --badge-color: #0369a1;
+
+            --timeline-line: rgba(15, 23, 42, 0.08);
+            --timeline-circle-bg: #ffffff;
+            --timeline-active: #0ea5e9;
+
+            --toggle-bg: rgba(255, 255, 255, 0.6);
+            --toggle-border: rgba(15, 23, 42, 0.06);
+
+            --footer-text: #64748b;
+            --footer-border: rgba(15, 23, 42, 0.04);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Variables */
+            --bg-gradient: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 50%), 
+                           radial-gradient(at 50% 0%, #311042 0px, transparent 50%), 
+                           radial-gradient(at 100% 0%, #0c1e35 0px, transparent 50%), 
+                           #030712;
+            --card-bg: rgba(15, 23, 42, 0.45);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --card-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-gradient: linear-gradient(135deg, #a78bfa, #f472b6);
+            --accent-hover: linear-gradient(135deg, #7c3aed, #db2777);
+            --glow-color: rgba(167, 139, 250, 0.15);
+            --shadow-color: rgba(0, 0, 0, 0.4);
+
+            --orb-1-color: rgba(124, 58, 237, 0.35);
+            --orb-2-color: rgba(219, 39, 119, 0.25);
+            --orb-3-color: rgba(37, 99, 235, 0.3);
+            --orb-opacity: 0.5;
+            --orb-blend: screen;
+            --orb-filter: blur(100px);
+
+            --badge-bg: rgba(167, 139, 250, 0.12);
+            --badge-border: rgba(167, 139, 250, 0.25);
+            --badge-color: #c084fc;
+
+            --timeline-line: rgba(255, 255, 255, 0.08);
+            --timeline-circle-bg: #1f2937;
+            --timeline-active: #a78bfa;
+
+            --toggle-bg: rgba(255, 255, 255, 0.04);
+            --toggle-border: rgba(255, 255, 255, 0.06);
+
+            --footer-text: #6b7280;
+            --footer-border: rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            transition: background 0.6s ease, color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Ambient Glowing Spheres */
+        .glow-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: var(--orb-filter);
+            z-index: 1;
+            pointer-events: none;
+            opacity: var(--orb-opacity);
+            mix-blend-mode: var(--orb-blend);
+            transition: all 0.8s ease;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--orb-1-color) 0%, transparent 70%);
+            top: -10%;
+            left: -5%;
+            animation: float-1 25s infinite alternate ease-in-out;
+        }
+
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--orb-2-color) 0%, transparent 70%);
+            bottom: 10%;
+            right: -10%;
+            animation: float-2 30s infinite alternate ease-in-out;
+        }
+
+        .orb-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, var(--orb-3-color) 0%, transparent 70%);
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: float-3 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes float-1 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(120px, 80px) scale(1.15); }
+            100% { transform: translate(-40px, 160px) scale(0.9); }
+        }
+
+        @keyframes float-2 {
+            0% { transform: translate(0, 0) scale(1.1); }
+            50% { transform: translate(-140px, -60px) scale(0.85); }
+            100% { transform: translate(60px, -180px) scale(1.2); }
+        }
+
+        @keyframes float-3 {
+            0% { transform: translate(-50%, -50%) translate(0, 0) scale(0.9); }
+            50% { transform: translate(-50%, -50%) translate(-80px, 120px) scale(1.1); }
+            100% { transform: translate(-50%, -50%) translate(100px, -80px) scale(0.95); }
+        }
+
+        /* Particle Canvas */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Nav controls */
+        .controls {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--timeline-active);
+        }
+
+        [data-theme="dark"] .control-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Layout Structure */
+        header {
+            width: 100%;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 24px 80px 24px;
+            z-index: 10;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            animation: fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styled Glass Cards */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 20px 40px var(--shadow-color), var(--card-inset-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15), 
+                        box-shadow 0.4s ease, 
+                        border-color 0.4s ease;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 28px;
+            padding: 2px;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            opacity: 0.5;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px var(--shadow-color), 0 0 30px var(--glow-color);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-card:hover::before {
+            background: var(--accent-gradient);
+            opacity: 0.8;
+        }
+
+        /* Profile Intro Card specific design */
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* Avatar Container & Interactive Switcher */
+        .avatar-wrapper {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar-frame {
+            width: 280px;
+            height: 280px;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 3px solid var(--card-border);
+            box-shadow: 0 12px 28px var(--shadow-color);
+            position: relative;
+            background: rgba(0,0,0,0.05);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+        }
+
+        .avatar-frame:hover {
+            transform: scale(1.03) rotate(1deg);
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transform: scale(1.1) rotate(-1deg);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .avatar-img.active {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+
+        /* Switcher Toggle Buttons */
+        .avatar-switcher {
+            display: flex;
+            background: var(--toggle-bg);
+            border: 1px solid var(--toggle-border);
+            padding: 4px;
+            border-radius: 14px;
+            gap: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .switcher-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .switcher-btn.active {
+            background: var(--accent-gradient);
+            color: #ffffff;
+            box-shadow: 0 4px 12px var(--glow-color);
+        }
+
+        .switcher-btn:not(.active):hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        [data-theme="dark"] .switcher-btn:not(.active):hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Bio Details */
+        .profile-bio {
+            flex-grow: 1;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--badge-bg);
+            border: 1px solid var(--badge-border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--badge-color);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-experience {
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(167, 139, 250, 0.15));
+            border-color: rgba(244, 114, 182, 0.3);
+            color: #db2777;
+        }
+        [data-theme="dark"] .badge-experience {
+            color: #f472b6;
+        }
+
+        .bio-headline {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.35;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            word-break: keep-all;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bio-description {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text-color);
+            font-weight: 500;
+            word-break: keep-all;
+        }
+
+        /* Section Headings */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .section-title i {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Career Timeline Section */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            margin-top: 10px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 5px;
+            width: 2px;
+            height: calc(100% - 12px);
+            background: var(--timeline-line);
+            transition: background 0.3s ease;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            top: 4px;
+            left: -28px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--timeline-circle-bg);
+            border: 2.5px solid var(--text-muted);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            z-index: 5;
+        }
+
+        .timeline-item:hover .timeline-marker {
+            background: var(--timeline-active);
+            border-color: var(--timeline-active);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px var(--timeline-active);
+        }
+
+        .timeline-content {
+            padding: 4px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-content {
+            transform: translateX(4px);
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .timeline-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline-title i {
+            color: var(--timeline-active);
+            font-size: 1rem;
+        }
+
+        .timeline-duration {
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: var(--badge-bg);
+            border: 1px solid var(--badge-border);
+            color: var(--badge-color);
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            font-weight: 500;
+            word-break: keep-all;
+        }
+
+        /* Hobbies Section */
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .hobby-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 24px;
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        [data-theme="dark"] .hobby-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .hobby-item:hover {
+            transform: translateX(6px);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        [data-theme="dark"] .hobby-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .hobby-icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: var(--badge-bg);
+            border: 1px solid var(--badge-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--badge-color);
+            transition: transform 0.3s ease;
+        }
+
+        .hobby-item:hover .hobby-icon-box {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .hobby-content {
+            flex: 1;
+        }
+
+        .hobby-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 6px;
+        }
+
+        .hobby-desc {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Footer copyright note */
+        footer {
+            background: transparent;
+            color: var(--footer-text);
+            width: 100%;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-top: 1px solid var(--footer-border);
+            z-index: 10;
+            position: relative;
+            letter-spacing: 0.02em;
+            transition: border-color 0.6s ease, color 0.6s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 24px 20px;
+            }
+
+            main {
+                padding: 10px 20px 60px 20px;
+                gap: 30px;
+            }
+
+            .glass-card {
+                padding: 30px 20px;
+            }
+
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+
+            .avatar-frame {
+                width: 240px;
+                height: 240px;
+            }
+
+            .badge-row {
+                justify-content: center;
+            }
+
+            .bio-headline {
+                font-size: 1.8rem;
+            }
+
+            .timeline-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Decorative Glowing Spheres -->
+    <div class="glow-sphere orb-1"></div>
+    <div class="glow-sphere orb-2"></div>
+    <div class="glow-sphere orb-3"></div>
+
+    <!-- Interactive Background Canvas for subtle particles -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Theme Switcher Utility Control -->
+    <div class="controls">
+        <button class="control-btn" id="theme-toggle" title="테마 변경" aria-label="Toggle theme">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header>
+        <h1>IT Specialist Blog</h1>
+    </header>
+
+    <!-- Main Page Container -->
+    <main>
+        
+        <!-- Profile & Introduction Section -->
+        <section class="glass-card">
+            <div class="profile-container">
+                
+                <!-- Avatar Switcher Component -->
+                <div class="avatar-wrapper">
+                    <div class="avatar-frame" id="avatar-frame">
+                        <img src="./images/49chan.h.jpg" alt="프로필 스케치 사진" class="avatar-img active" id="avatar-sketch">
+                        <img src="./images/49chan.h(ChatGPT).png" alt="프로필 AI 아바타 사진" class="avatar-img" id="avatar-ai">
+                    </div>
+                    <div class="avatar-switcher">
+                        <button class="switcher-btn active" onclick="switchAvatar('sketch')">
+                            <i class="fa-solid fa-pen-nib"></i> Sketch
+                        </button>
+                        <button class="switcher-btn" onclick="switchAvatar('ai')">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Avatar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Biography Details -->
+                <div class="profile-bio">
+                    <div class="badge-row">
+                        <span class="badge badge-experience">
+                            <i class="fa-solid fa-award"></i> 30년+ IT 경력
+                        </span>
+                        <span class="badge">
+                            <i class="fa-solid fa-code"></i> Full-Stack Specialist
+                        </span>
+                    </div>
+                    <h2 class="bio-headline">안녕하세요!</h2>
+                    <p class="bio-description">
+                        30년 이상 현업에서 실무 경험을 쌓아온 IT 개발 및 운영 경력을 가진 베테랑 전문가입니다. 
+                        시스템 간 유연한 연동을 설계하는 인터페이스 개발부터, 일본 글로벌 파견 개발, 
+                        그리고 신뢰도가 생명인 국내 주요 금융사 시스템 개발 및 운영 보수까지 다양한 환경에서 가치를 증명해 왔습니다.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Career Timeline Section -->
+        <section class="glass-card">
+            <h3 class="section-title">
+                <i class="fa-solid fa-briefcase"></i> 주요 직장 및 프리랜서 경력
+            </h3>
+            
+            <div class="timeline">
+                <!-- Timeline item 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h4 class="timeline-title">
+                                <i class="fa-solid fa-network-wired"></i> 바코드 장비 인터페이스 개발
+                            </h4>
+                            <span class="timeline-duration">3년</span>
+                        </div>
+                        <p class="timeline-desc">
+                            바코드 스캐너, 산업용 프린터 및 모바일 장비와 호스트 시스템 간의 인터페이스 프로토콜을 분석하고 솔루션을 개발하였습니다. 공정 관리 및 물류 자동화 연동을 핵심으로 설계하였습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline item 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h4 class="timeline-title">
+                                <i class="fa-solid fa-earth-asia"></i> 일본 현지 파견 IT 개발 및 운영
+                            </h4>
+                            <span class="timeline-duration">15년</span>
+                        </div>
+                        <p class="timeline-desc">
+                            일본 현지 기업 및 대형 비즈니스 프로젝트에 파견되어 IT 시스템 아키텍처 개발과 핵심 솔루션 구현을 15년간 수행하였습니다. 글로벌 협업 프로세스를 마스터하고 비즈니스 안정성을 유지해 왔습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline item 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h4 class="timeline-title">
+                                <i class="fa-solid fa-building-columns"></i> 국내 금융사 IT 개발 및 운영보수
+                            </h4>
+                            <span class="timeline-duration">12년 (프리랜서)</span>
+                        </div>
+                        <p class="timeline-desc">
+                            국내 대형 금융기관의 핵심 업무 시스템 및 정보계 인터페이스 개발을 주도하고, 장애 복구와 지속적인 운영보수(SM) 업무를 12년간 안정적으로 수행하여 고가용성 인프라 구축에 기여하였습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hobbies Section -->
+        <section class="glass-card">
+            <h3 class="section-title">
+                <i class="fa-solid fa-compass"></i> 취미 및 동호회 활동
+            </h3>
+            <div class="hobbies-grid">
+                <div class="hobby-item">
+                    <div class="hobby-icon-box">
+                        <i class="fa-solid fa-person-hiking"></i>
+                    </div>
+                    <div class="hobby-content">
+                        <h4 class="hobby-title">등산 및 걷기 동호회</h4>
+                        <p class="hobby-desc">
+                            바쁜 IT 실무에서 벗어나 자연과 호흡하며 마인드를 컨트롤하는 것을 선호합니다. 전국 각지의 산행 코스를 탐방하고, 동호회 활동을 통해 다양한 가치관을 가진 사람들과 건강하게 걷는 문화를 즐기고 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Copyright Section -->
+    <footer>
+        <p>&copy; 2026. 49chan. All rights reserved.</p>
+    </footer>
+
+    <!-- Interactive Logic Scripts -->
+    <script>
+        // Theme Switcher Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Check saved theme or system preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
+            document.body.removeAttribute('data-theme');
+            themeIcon.className = 'fa-solid fa-moon';
+        } else {
+            document.body.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+            // Trigger celebration burst at center
+            triggerSparkleBurst(window.innerWidth / 2, window.innerHeight / 2, 35);
+        });
+
+        // Interactive Avatar Switcher with Slide/Fade & Canvas Burst
+        function switchAvatar(type) {
+            const sketchImg = document.getElementById('avatar-sketch');
+            const aiImg = document.getElementById('avatar-ai');
+            const frame = document.getElementById('avatar-frame');
+            const buttons = document.querySelectorAll('.switcher-btn');
+
+            if (type === 'sketch') {
+                if (sketchImg.classList.contains('active')) return;
+                
+                sketchImg.classList.add('active');
+                aiImg.classList.remove('active');
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+            } else {
+                if (aiImg.classList.contains('active')) return;
+
+                aiImg.classList.add('active');
+                sketchImg.classList.remove('active');
+                buttons[1].classList.add('active');
+                buttons[0].classList.remove('active');
+            }
+
+            // Subtly wobble frame for interactive feedback
+            frame.style.transform = 'scale(0.97) rotate(-2deg)';
+            setTimeout(() => {
+                frame.style.transform = '';
+            }, 300);
+
+            // Trigger burst effect on the avatar image position
+            const rect = frame.getBoundingClientRect();
+            const burstX = rect.left + rect.width / 2;
+            const burstY = rect.top + rect.height / 2;
+            triggerSparkleBurst(burstX, burstY, 30);
+        }
+
+        // Particle Canvas Logic
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+
+        function getParticleColors() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                return ['#a78bfa', '#f472b6', '#c084fc', '#818cf8', '#ec4899', '#6366f1'];
+            } else {
+                return ['#0ea5e9', '#10b981', '#38bdf8', '#34d399', '#059669', '#0284c7'];
+            }
+        }
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, vx, vy, size, color, alpha, fade, burst) {
+                const themeColors = getParticleColors();
+                this.x = x || Math.random() * window.innerWidth;
+                this.y = y || Math.random() * window.innerHeight;
+                this.vx = vx !== undefined ? vx : (Math.random() - 0.5) * 1.2;
+                this.vy = vy !== undefined ? vy : (Math.random() - 0.5) * 1.2;
+                this.size = size || Math.random() * 2.5 + 1;
+                this.color = color || themeColors[Math.floor(Math.random() * themeColors.length)];
+                this.baseAlpha = alpha || Math.random() * 0.3 + 0.1;
+                this.alpha = this.baseAlpha;
+                this.fade = fade || 0.002 + Math.random() * 0.003;
+                this.phase = Math.random() * Math.PI * 2;
+                this.burst = burst || false;
+                this.history = [];
+            }
+
+            draw() {
+                if (this.burst && this.history.length > 1) {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha * 0.3;
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = this.size * 0.4;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(this.history[0].x, this.history[0].y);
+                    for (let i = 1; i < this.history.length; i++) {
+                        ctx.lineTo(this.history[i].x, this.history[i].y);
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                ctx.save();
+                let drawAlpha = this.alpha;
+                if (this.burst && this.alpha < 0.6) {
+                    drawAlpha *= (Math.random() * 0.4 + 0.6);
+                }
+                ctx.globalAlpha = drawAlpha;
+
+                if (this.burst) {
+                    // Star shine flare shape
+                    ctx.shadowBlur = this.size * 3;
+                    ctx.shadowColor = this.color;
+                    ctx.fillStyle = this.color;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y - this.size);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x + this.size, this.y);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x, this.y + this.size);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x - this.size, this.y);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x, this.y - this.size);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Inner bright white spark core
+                    ctx.shadowBlur = 0;
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.moveTo(this.x - this.size * 0.6, this.y);
+                    ctx.lineTo(this.x + this.size * 0.6, this.y);
+                    ctx.moveTo(this.x, this.y - this.size * 0.6);
+                    ctx.lineTo(this.x, this.y + this.size * 0.6);
+                    ctx.stroke();
+                } else {
+                    // Soft ambient bubble
+                    ctx.shadowBlur = this.size * 2;
+                    ctx.shadowColor = this.color;
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+
+            update() {
+                if (this.burst) {
+                    this.history.push({ x: this.x, y: this.y });
+                    if (this.history.length > 4) {
+                        this.history.shift();
+                    }
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (!this.burst) {
+                    this.alpha = this.baseAlpha + Math.sin(Date.now() * 0.003 + this.phase) * 0.08;
+                    if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
+                    if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
+                } else {
+                    this.vx *= 0.95;
+                    this.vy *= 0.95;
+                    this.vy += 0.08; // subtle gravity pull
+                    this.alpha -= this.fade;
+                }
+            }
+        }
+
+        // Initialize particles list
+        for (let i = 0; i < 30; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+            const currentTheme = document.body.getAttribute('data-theme');
+            ctx.globalCompositeOperation = currentTheme === 'dark' ? 'screen' : 'source-over';
+
+            particles = particles.filter(p => p.alpha > 0);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Maintain ambient particle counts
+            const ambientCount = particles.filter(p => !p.burst).length;
+            if (ambientCount < 30) {
+                particles.push(new Particle());
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Sparkle Burst Trigger (Coordinates relative to viewport)
+        function triggerSparkleBurst(clientX, clientY, count = 20) {
+            const themeColors = getParticleColors();
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 1.5;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                const size = Math.random() * 4 + 2;
+                const color = themeColors[Math.floor(Math.random() * themeColors.length)];
+                const fade = 0.015 + Math.random() * 0.015;
+
+                const p = new Particle(clientX, clientY, vx, vy, size, color, 1.0, fade, true);
+                particles.push(p);
+            }
+        }
+
+        // Trigger particles when user clicks empty screen areas
+        window.addEventListener('click', (e) => {
+            if (e.target.closest('.controls') || e.target.closest('.switcher-btn') || e.target.closest('.glass-card')) return;
+            triggerSparkleBurst(e.clientX, e.clientY, 15);
+        });
+
+    </script>
+</body>
+</html>
