@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,8 @@
     <meta property="og:type" content="website">
 
     <!-- Pretendard Font for premium Korean typography -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,10 +22,10 @@
     <style>
         :root {
             /* Light Mode Variables */
-            --bg-gradient: radial-gradient(at 0% 0%, #e0f2fe 0px, transparent 55%), 
-                           radial-gradient(at 100% 0%, #fdf4ff 0px, transparent 55%), 
-                           radial-gradient(at 50% 100%, #f0fdf4 0px, transparent 55%), 
-                           #f8fafc;
+            --bg-gradient: radial-gradient(at 0% 0%, #e0f2fe 0px, transparent 55%),
+                radial-gradient(at 100% 0%, #fdf4ff 0px, transparent 55%),
+                radial-gradient(at 50% 100%, #f0fdf4 0px, transparent 55%),
+                #f8fafc;
             --card-bg: rgba(255, 255, 255, 0.4);
             --card-border: rgba(255, 255, 255, 0.6);
             --card-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
@@ -33,14 +35,14 @@
             --accent-hover: linear-gradient(135deg, #0369a1, #047857);
             --glow-color: rgba(14, 165, 233, 0.12);
             --shadow-color: rgba(15, 23, 42, 0.04);
-            
+
             --orb-1-color: rgba(56, 189, 248, 0.3);
             --orb-2-color: rgba(244, 114, 182, 0.2);
             --orb-3-color: rgba(52, 211, 153, 0.25);
             --orb-opacity: 0.7;
             --orb-blend: multiply;
             --orb-filter: blur(80px);
-            
+
             --badge-bg: rgba(14, 165, 233, 0.08);
             --badge-border: rgba(14, 165, 233, 0.18);
             --badge-color: #0369a1;
@@ -58,10 +60,10 @@
 
         [data-theme="dark"] {
             /* Dark Mode Variables */
-            --bg-gradient: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 50%), 
-                           radial-gradient(at 50% 0%, #311042 0px, transparent 50%), 
-                           radial-gradient(at 100% 0%, #0c1e35 0px, transparent 50%), 
-                           #030712;
+            --bg-gradient: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 50%),
+                radial-gradient(at 50% 0%, #311042 0px, transparent 50%),
+                radial-gradient(at 100% 0%, #0c1e35 0px, transparent 50%),
+                #030712;
             --card-bg: rgba(15, 23, 42, 0.45);
             --card-border: rgba(255, 255, 255, 0.06);
             --card-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -155,21 +157,45 @@
         }
 
         @keyframes float-1 {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(120px, 80px) scale(1.15); }
-            100% { transform: translate(-40px, 160px) scale(0.9); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(120px, 80px) scale(1.15);
+            }
+
+            100% {
+                transform: translate(-40px, 160px) scale(0.9);
+            }
         }
 
         @keyframes float-2 {
-            0% { transform: translate(0, 0) scale(1.1); }
-            50% { transform: translate(-140px, -60px) scale(0.85); }
-            100% { transform: translate(60px, -180px) scale(1.2); }
+            0% {
+                transform: translate(0, 0) scale(1.1);
+            }
+
+            50% {
+                transform: translate(-140px, -60px) scale(0.85);
+            }
+
+            100% {
+                transform: translate(60px, -180px) scale(1.2);
+            }
         }
 
         @keyframes float-3 {
-            0% { transform: translate(-50%, -50%) translate(0, 0) scale(0.9); }
-            50% { transform: translate(-50%, -50%) translate(-80px, 120px) scale(1.1); }
-            100% { transform: translate(-50%, -50%) translate(100px, -80px) scale(0.95); }
+            0% {
+                transform: translate(-50%, -50%) translate(0, 0) scale(0.9);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) translate(-80px, 120px) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) translate(100px, -80px) scale(0.95);
+            }
         }
 
         /* Particle Canvas */
@@ -221,6 +247,37 @@
             background: rgba(255, 255, 255, 0.12);
         }
 
+        /* Navigation Button Style */
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            z-index: 100;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--timeline-active);
+            box-shadow: 0 6px 16px var(--shadow-color), 0 0 15px var(--glow-color);
+        }
+
+        [data-theme="dark"] .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
         /* Layout Structure */
         header {
             width: 100%;
@@ -263,6 +320,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -280,9 +338,9 @@
             box-shadow: 0 20px 40px var(--shadow-color), var(--card-inset-shadow);
             position: relative;
             overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15), 
-                        box-shadow 0.4s ease, 
-                        border-color 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
         }
 
         .glass-card::before {
@@ -339,7 +397,7 @@
             border: 3px solid var(--card-border);
             box-shadow: 0 12px 28px var(--shadow-color);
             position: relative;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2);
         }
 
@@ -372,7 +430,7 @@
             padding: 4px;
             border-radius: 14px;
             gap: 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
             width: 100%;
             max-width: 280px;
         }
@@ -440,6 +498,7 @@
             border-color: rgba(244, 114, 182, 0.3);
             color: #db2777;
         }
+
         [data-theme="dark"] .badge-experience {
             color: #f472b6;
         }
@@ -709,6 +768,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Background Decorative Glowing Spheres -->
@@ -729,15 +789,18 @@
     <!-- Main Navigation Header -->
     <header>
         <h1>IT Specialist Blog</h1>
+        <a href="가위바위보게임.html" class="nav-btn">
+            <i class="fa-solid fa-gamepad"></i> 가위바위보 게임
+        </a>
     </header>
 
     <!-- Main Page Container -->
     <main>
-        
+
         <!-- Profile & Introduction Section -->
         <section class="glass-card">
             <div class="profile-container">
-                
+
                 <!-- Avatar Switcher Component -->
                 <div class="avatar-wrapper">
                     <div class="avatar-frame" id="avatar-frame">
@@ -766,8 +829,8 @@
                     </div>
                     <h2 class="bio-headline">안녕하세요!</h2>
                     <p class="bio-description">
-                        30년 이상 현업에서 실무 경험을 쌓아온 IT 개발 및 운영 경력을 가진 베테랑 전문가입니다. 
-                        시스템 간 유연한 연동을 설계하는 인터페이스 개발부터, 일본 글로벌 파견 개발, 
+                        30년 이상 현업에서 실무 경험을 쌓아온 IT 개발 및 운영 경력을 가진 베테랑 전문가입니다.
+                        시스템 간 유연한 연동을 설계하는 인터페이스 개발부터, 일본 글로벌 파견 개발,
                         그리고 신뢰도가 생명인 국내 주요 금융사 시스템 개발 및 운영 보수까지 다양한 환경에서 가치를 증명해 왔습니다.
                     </p>
                 </div>
@@ -780,7 +843,7 @@
             <h3 class="section-title">
                 <i class="fa-solid fa-briefcase"></i> 주요 직장 및 프리랜서 경력
             </h3>
-            
+
             <div class="timeline">
                 <!-- Timeline item 1 -->
                 <div class="timeline-item">
@@ -793,7 +856,8 @@
                             <span class="timeline-duration">3년</span>
                         </div>
                         <p class="timeline-desc">
-                            바코드 스캐너, 산업용 프린터 및 모바일 장비와 호스트 시스템 간의 인터페이스 프로토콜을 분석하고 솔루션을 개발하였습니다. 공정 관리 및 물류 자동화 연동을 핵심으로 설계하였습니다.
+                            바코드 스캐너, 산업용 프린터 및 모바일 장비와 호스트 시스템 간의 인터페이스 프로토콜을 분석하고 솔루션을 개발하였습니다. 공정 관리 및 물류 자동화 연동을 핵심으로
+                            설계하였습니다.
                         </p>
                     </div>
                 </div>
@@ -809,7 +873,8 @@
                             <span class="timeline-duration">15년</span>
                         </div>
                         <p class="timeline-desc">
-                            일본 현지 기업 및 대형 비즈니스 프로젝트에 파견되어 IT 시스템 아키텍처 개발과 핵심 솔루션 구현을 15년간 수행하였습니다. 글로벌 협업 프로세스를 마스터하고 비즈니스 안정성을 유지해 왔습니다.
+                            일본 현지 기업 및 대형 비즈니스 프로젝트에 파견되어 IT 시스템 아키텍처 개발과 핵심 솔루션 구현을 15년간 수행하였습니다. 글로벌 협업 프로세스를 마스터하고
+                            비즈니스 안정성을 유지해 왔습니다.
                         </p>
                     </div>
                 </div>
@@ -825,7 +890,8 @@
                             <span class="timeline-duration">12년 (프리랜서)</span>
                         </div>
                         <p class="timeline-desc">
-                            국내 대형 금융기관의 핵심 업무 시스템 및 정보계 인터페이스 개발을 주도하고, 장애 복구와 지속적인 운영보수(SM) 업무를 12년간 안정적으로 수행하여 고가용성 인프라 구축에 기여하였습니다.
+                            국내 대형 금융기관의 핵심 업무 시스템 및 정보계 인터페이스 개발을 주도하고, 장애 복구와 지속적인 운영보수(SM) 업무를 12년간 안정적으로 수행하여 고가용성
+                            인프라 구축에 기여하였습니다.
                         </p>
                     </div>
                 </div>
@@ -845,7 +911,8 @@
                     <div class="hobby-content">
                         <h4 class="hobby-title">등산 및 걷기 동호회</h4>
                         <p class="hobby-desc">
-                            바쁜 IT 실무에서 벗어나 자연과 호흡하며 마인드를 컨트롤하는 것을 선호합니다. 전국 각지의 산행 코스를 탐방하고, 동호회 활동을 통해 다양한 가치관을 가진 사람들과 건강하게 걷는 문화를 즐기고 있습니다.
+                            바쁜 IT 실무에서 벗어나 자연과 호흡하며 마인드를 컨트롤하는 것을 선호합니다. 전국 각지의 산행 코스를 탐방하고, 동호회 활동을 통해 다양한 가치관을 가진 사람들과
+                            건강하게 걷는 문화를 즐기고 있습니다.
                         </p>
                     </div>
                 </div>
@@ -901,7 +968,7 @@
 
             if (type === 'sketch') {
                 if (sketchImg.classList.contains('active')) return;
-                
+
                 sketchImg.classList.add('active');
                 aiImg.classList.remove('active');
                 buttons[0].classList.add('active');
@@ -1000,7 +1067,7 @@
                     ctx.shadowBlur = this.size * 3;
                     ctx.shadowColor = this.color;
                     ctx.fillStyle = this.color;
-                    
+
                     ctx.beginPath();
                     ctx.moveTo(this.x, this.y - this.size);
                     ctx.quadraticCurveTo(this.x, this.y, this.x + this.size, this.y);
@@ -1108,4 +1175,5 @@
 
     </script>
 </body>
+
 </html>

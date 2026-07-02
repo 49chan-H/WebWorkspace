@@ -1,70 +1,1450 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AI 가위바위보 게임 - IT Specialist</title>
+    <meta name="description" content="Teachable Machine 이미지 인식 기술을 활용한 프리미엄 AI 가위바위보 게임입니다.">
+
+    <!-- Pretendard Font for premium Korean typography -->
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Light Mode Variables */
+            --bg-gradient: radial-gradient(at 0% 0%, #e0f2fe 0px, transparent 55%),
+                radial-gradient(at 100% 0%, #fdf4ff 0px, transparent 55%),
+                radial-gradient(at 50% 100%, #f0fdf4 0px, transparent 55%),
+                #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.4);
+            --card-border: rgba(255, 255, 255, 0.6);
+            --card-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            --text-color: #0f172a;
+            --text-muted: #475569;
+            --accent-gradient: linear-gradient(135deg, #0ea5e9, #10b981);
+            --accent-hover: linear-gradient(135deg, #0369a1, #047857);
+            --glow-color: rgba(14, 165, 233, 0.12);
+            --shadow-color: rgba(15, 23, 42, 0.04);
+
+            --orb-1-color: rgba(56, 189, 248, 0.3);
+            --orb-2-color: rgba(244, 114, 182, 0.2);
+            --orb-3-color: rgba(52, 211, 153, 0.25);
+            --orb-opacity: 0.7;
+            --orb-blend: multiply;
+            --orb-filter: blur(80px);
+
+            --badge-bg: rgba(14, 165, 233, 0.08);
+            --badge-border: rgba(14, 165, 233, 0.18);
+            --badge-color: #0369a1;
+
+            --timeline-line: rgba(15, 23, 42, 0.08);
+            --timeline-circle-bg: #ffffff;
+            --timeline-active: #0ea5e9;
+
+            --toggle-bg: rgba(255, 255, 255, 0.6);
+            --toggle-border: rgba(15, 23, 42, 0.06);
+
+            --footer-text: #64748b;
+            --footer-border: rgba(15, 23, 42, 0.04);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Variables */
+            --bg-gradient: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 50%),
+                radial-gradient(at 50% 0%, #311042 0px, transparent 50%),
+                radial-gradient(at 100% 0%, #0c1e35 0px, transparent 50%),
+                #030712;
+            --card-bg: rgba(15, 23, 42, 0.45);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --card-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-gradient: linear-gradient(135deg, #a78bfa, #f472b6);
+            --accent-hover: linear-gradient(135deg, #7c3aed, #db2777);
+            --glow-color: rgba(167, 139, 250, 0.15);
+            --shadow-color: rgba(0, 0, 0, 0.4);
+
+            --orb-1-color: rgba(124, 58, 237, 0.35);
+            --orb-2-color: rgba(219, 39, 119, 0.25);
+            --orb-3-color: rgba(37, 99, 235, 0.3);
+            --orb-opacity: 0.5;
+            --orb-blend: screen;
+            --orb-filter: blur(100px);
+
+            --badge-bg: rgba(167, 139, 250, 0.12);
+            --badge-border: rgba(167, 139, 250, 0.25);
+            --badge-color: #c084fc;
+
+            --timeline-line: rgba(255, 255, 255, 0.08);
+            --timeline-circle-bg: #1f2937;
+            --timeline-active: #a78bfa;
+
+            --toggle-bg: rgba(255, 255, 255, 0.04);
+            --toggle-border: rgba(255, 255, 255, 0.06);
+
+            --footer-text: #6b7280;
+            --footer-border: rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            transition: background 0.6s ease, color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Ambient Glowing Spheres */
+        .glow-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: var(--orb-filter);
+            z-index: 1;
+            pointer-events: none;
+            opacity: var(--orb-opacity);
+            mix-blend-mode: var(--orb-blend);
+            transition: all 0.8s ease;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--orb-1-color) 0%, transparent 70%);
+            top: -10%;
+            left: -5%;
+            animation: float-1 25s infinite alternate ease-in-out;
+        }
+
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--orb-2-color) 0%, transparent 70%);
+            bottom: 10%;
+            right: -10%;
+            animation: float-2 30s infinite alternate ease-in-out;
+        }
+
+        .orb-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, var(--orb-3-color) 0%, transparent 70%);
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: float-3 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes float-1 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(120px, 80px) scale(1.15); }
+            100% { transform: translate(-40px, 160px) scale(0.9); }
+        }
+
+        @keyframes float-2 {
+            0% { transform: translate(0, 0) scale(1.1); }
+            50% { transform: translate(-140px, -60px) scale(0.85); }
+            100% { transform: translate(60px, -180px) scale(1.2); }
+        }
+
+        @keyframes float-3 {
+            0% { transform: translate(-50%, -50%) translate(0, 0) scale(0.9); }
+            50% { transform: translate(-50%, -50%) translate(-80px, 120px) scale(1.1); }
+            100% { transform: translate(-50%, -50%) translate(100px, -80px) scale(0.95); }
+        }
+
+        /* Particle Canvas */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Nav controls */
+        .controls {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--timeline-active);
+        }
+
+        [data-theme="dark"] .control-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Navigation Button Style */
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            z-index: 100;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--timeline-active);
+            box-shadow: 0 6px 16px var(--shadow-color), 0 0 15px var(--glow-color);
+        }
+
+        [data-theme="dark"] .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Layout Structure */
+        header {
+            width: 100%;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 24px 80px 24px;
+            z-index: 10;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            animation: fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styled Glass Cards */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 20px 40px var(--shadow-color), var(--card-inset-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 28px;
+            padding: 2px;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            opacity: 0.5;
+        }
+
+        /* Game specific styling */
+        .game-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .game-headline {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.35;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            word-break: keep-all;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .game-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            font-weight: 500;
+            word-break: keep-all;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
+            margin-top: 30px;
+            align-items: center;
+        }
+
+        .webcam-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            width: 100%;
+        }
+
+        .webcam-box {
+            width: 280px;
+            height: 280px;
+            border-radius: 24px;
+            border: 3px solid var(--card-border);
+            box-shadow: 0 12px 28px var(--shadow-color);
+            position: relative;
+            background: rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .webcam-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+        }
+
+        .webcam-placeholder i {
+            font-size: 3.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        #webcam-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Result Overlay Style */
+        .webcam-result-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 10;
+            animation: overlay-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        [data-theme="dark"] .webcam-result-overlay {
+            background: rgba(15, 23, 42, 0.65);
+        }
+
+        /* Battle Arena Layout in Overlay */
+        .battle-arena {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .fighter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fighter-label {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .fighter-icon {
+            font-size: 3rem;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .fighter-icon {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .player-fighter .fighter-icon {
+            animation: fighter-bounce-left 0.8s infinite alternate ease-in-out;
+        }
+
+        .computer-fighter .fighter-icon {
+            animation: fighter-bounce-right 0.8s infinite alternate ease-in-out;
+        }
+
+        @keyframes fighter-bounce-left {
+            from { transform: translateY(0) rotate(-3deg); }
+            to { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        @keyframes fighter-bounce-right {
+            from { transform: translateY(0) rotate(3deg); }
+            to { transform: translateY(-8px) rotate(-3deg); }
+        }
+
+        .battle-vs {
+            font-size: 1.4rem;
+            font-weight: 950;
+            color: var(--timeline-active);
+            font-style: italic;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .result-text-large {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            padding: 0 15px;
+            line-height: 1.4;
+        }
+
+        .restart-overlay-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 8px 16px var(--glow-color);
+            transition: all 0.3s ease;
+        }
+
+        .restart-overlay-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 12px 24px var(--glow-color);
+            background: var(--accent-hover);
+        }
+
+        @keyframes overlay-fade-in {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .results-area {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .prediction-item {
+            width: 100%;
+        }
+
+        .result-row {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 14px 20px;
+            gap: 16px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        [data-theme="dark"] .result-row {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .result-row.active-prediction {
+            border-color: var(--timeline-active);
+            box-shadow: 0 8px 24px var(--shadow-color), 0 0 15px var(--glow-color);
+            transform: scale(1.03) translateX(5px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        [data-theme="dark"] .result-row.active-prediction {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .result-label-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 90px;
+        }
+
+        .result-icon {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .result-name {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--text-color);
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        [data-theme="dark"] .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .result-value {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--text-color);
+            min-width: 50px;
+            text-align: right;
+        }
+
+        /* Scoreboard Styling */
+        .scoreboard-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 24px;
+            padding: 16px 40px;
+            position: relative;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 10px 25px var(--shadow-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .scoreboard-container {
+            background: rgba(15, 23, 42, 0.35);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .score-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .score-value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-divider {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--text-muted);
+            opacity: 0.4;
+            font-style: italic;
+        }
+
+        .reset-score-btn {
+            position: absolute;
+            right: 14px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .reset-score-btn:hover {
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(180deg);
+        }
+
+        [data-theme="dark"] .reset-score-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .action-area {
+            display: flex;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .start-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 16px;
+            color: #ffffff;
+            font-size: 1.15rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 20px var(--glow-color);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px var(--glow-color);
+            background: var(--accent-hover);
+        }
+
+        .start-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        /* Footer */
+        footer {
+            background: transparent;
+            color: var(--footer-text);
+            width: 100%;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-top: 1px solid var(--footer-border);
+            z-index: 10;
+            position: relative;
+            letter-spacing: 0.02em;
+            transition: border-color 0.6s ease, color 0.6s ease;
+            margin-top: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 24px 20px;
+            }
+
+            main {
+                padding: 10px 20px 60px 20px;
+                gap: 30px;
+            }
+
+            .glass-card {
+                padding: 30px 20px;
+            }
+
+            .game-headline {
+                font-size: 1.8rem;
+            }
+
+            .game-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .webcam-box {
+                width: 240px;
+                height: 240px;
+            }
+
+            .scoreboard-container {
+                padding: 12px 24px;
+                gap: 20px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div>가위바위보 게임</div>
-<button type="button" onclick="init()">시작하기</button>
-<div id="webcam-container"></div>
-<div id="label-container"></div>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-<script type="text/javascript">
-    // More API functions here:
-    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
-    // the link to your model provided by Teachable Machine export panel
-    const URL = "https://teachablemachine.withgoogle.com/models/zFmJL02nEH/";
+    <!-- Background Decorative Glowing Spheres -->
+    <div class="glow-sphere orb-1"></div>
+    <div class="glow-sphere orb-2"></div>
+    <div class="glow-sphere orb-3"></div>
 
-    let model, webcam, labelContainer, maxPredictions;
+    <!-- Interactive Background Canvas for subtle particles -->
+    <canvas id="particle-canvas"></canvas>
 
-    // Load the image model and setup the webcam
-    async function init() {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
+    <!-- Theme Switcher Utility Control -->
+    <div class="controls">
+        <button class="control-btn" id="theme-toggle" title="테마 변경" aria-label="Toggle theme">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </div>
 
-        // load the model and metadata
-        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-        // or files from your local hard drive
-        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
+    <!-- Main Navigation Header -->
+    <header>
+        <h1>IT Specialist Games</h1>
+        <a href="index.html" class="nav-btn">
+            <i class="fa-solid fa-arrow-left"></i> 포트폴리오
+        </a>
+    </header>
 
-        // Convenience function to setup a webcam
-        const flip = true; // whether to flip the webcam
-        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-        await webcam.setup(); // request access to the webcam
-        await webcam.play();
-        window.requestAnimationFrame(loop);
+    <!-- Main Page Container -->
+    <main>
+        <section class="glass-card">
+            <div class="game-header">
+                <h2 class="game-headline">
+                    <i class="fa-solid fa-hand-fist"></i> AI 가위바위보 게임
+                </h2>
+                <p class="game-description">
+                    Google Teachable Machine의 인공지능 이미지 인식 기술을 활용한 가위바위보 게임입니다. 
+                    아래의 '시작하기' 버튼을 눌러 카메라 권한을 승인하고 가위, 바위, 보 중 하나를 취해보세요.
+                    <strong style="color: var(--timeline-active);">90% 이상의 확신도</strong>로 인식될 시 컴퓨터의 선택과 비교하여 승패를 판정합니다.
+                </p>
+            </div>
 
-        // append elements to the DOM
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
-        labelContainer = document.getElementById("label-container");
-        for (let i = 0; i < maxPredictions; i++) { // and class labels
-            labelContainer.appendChild(document.createElement("div"));
+            <div class="game-layout">
+                <!-- Webcam Viewport Area -->
+                <div class="webcam-area">
+                    <div class="webcam-box">
+                        <div id="webcam-placeholder" class="webcam-placeholder">
+                            <i class="fa-solid fa-video-slash"></i>
+                            <p>카메라 대기 중...<br><span style="font-size:0.8rem; font-weight:normal; opacity:0.8;">시작하기 버튼을 눌러주세요.</span></p>
+                        </div>
+                        <div id="webcam-container"></div>
+                        
+                        <!-- Result Overlay (Displayed upon >= 90% confidence) -->
+                        <div id="webcam-result-overlay" class="webcam-result-overlay" style="display: none;">
+                            <div class="battle-arena">
+                                <div class="fighter player-fighter">
+                                    <span class="fighter-label">나</span>
+                                    <div class="fighter-icon" id="player-fighter-icon"></div>
+                                </div>
+                                <div class="battle-vs">VS</div>
+                                <div class="fighter computer-fighter">
+                                    <span class="fighter-label">컴퓨터</span>
+                                    <div class="fighter-icon" id="computer-fighter-icon"></div>
+                                </div>
+                            </div>
+                            <div class="result-text-large" id="battle-result-text"></div>
+                            <button type="button" class="restart-overlay-btn" onclick="restartGame()">
+                                <i class="fa-solid fa-rotate-right"></i> 다음 판 하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live AI Predictions Area -->
+                <div class="results-area" id="label-container">
+                    <!-- Placeholder rows before game starts -->
+                    <div class="result-row">
+                        <div class="result-label-group">
+                            <span class="result-icon"><i class="fa-solid fa-hand-scissors" style="color:#10b981;"></i></span>
+                            <span class="result-name">가위</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="result-value">0%</span>
+                    </div>
+                    <div class="result-row">
+                        <div class="result-label-group">
+                            <span class="result-icon"><i class="fa-solid fa-hand-fist" style="color:#ef4444;"></i></span>
+                            <span class="result-name">바위</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="result-value">0%</span>
+                    </div>
+                    <div class="result-row">
+                        <div class="result-label-group">
+                            <span class="result-icon"><i class="fa-solid fa-hand" style="color:#3b82f6;"></i></span>
+                            <span class="result-name">보</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="result-value">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scoreboard Area -->
+            <div class="scoreboard-container">
+                <div class="score-card player-score">
+                    <span class="score-label"><i class="fa-solid fa-user"></i> 나 (Player)</span>
+                    <span class="score-value" id="player-score-val">0</span>
+                </div>
+                <div class="score-divider">VS</div>
+                <div class="score-card computer-score">
+                    <span class="score-label"><i class="fa-solid fa-laptop"></i> 컴퓨터 (CPU)</span>
+                    <span class="score-value" id="computer-score-val">0</span>
+                </div>
+                <button type="button" class="reset-score-btn" onclick="resetScore()" title="점수 초기화">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+            </div>
+
+            <!-- Action triggering area -->
+            <div class="action-area">
+                <button type="button" class="start-btn" id="start-btn" onclick="init()">
+                    <i class="fa-solid fa-play"></i> 시작하기
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Copyright Section -->
+    <footer>
+        <p>&copy; 2026. 49chan. All rights reserved.</p>
+    </footer>
+
+    <!-- Teachable Machine & TensorFlow JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <script type="text/javascript">
+        // the link to your model provided by Teachable Machine export panel
+        const URL = "https://teachablemachine.withgoogle.com/models/zFmJL02nEH/";
+
+        let model, webcam, labelContainer, maxPredictions;
+        let isGameOver = false;
+
+        // Load scores from localStorage or initialize
+        let playerScore = parseInt(localStorage.getItem('rps_player_score')) || 0;
+        let computerScore = parseInt(localStorage.getItem('rps_computer_score')) || 0;
+
+        // Initialize Scoreboard UI
+        updateScoreboardUI();
+
+        function updateScoreboardUI() {
+            document.getElementById("player-score-val").innerText = playerScore;
+            document.getElementById("computer-score-val").innerText = computerScore;
         }
-    }
 
-    async function loop() {
-        webcam.update(); // update the webcam frame
-        await predict();
-        window.requestAnimationFrame(loop);
-    }
-
-    // run the webcam image through the image model
-    async function predict() {
-        // predict can take in an image, video or canvas html element
-        const prediction = await model.predict(webcam.canvas);
-        for (let i = 0; i < maxPredictions; i++) {
-            const classPrediction =
-                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;
+        function resetScore() {
+            playerScore = 0;
+            computerScore = 0;
+            localStorage.setItem('rps_player_score', 0);
+            localStorage.setItem('rps_computer_score', 0);
+            updateScoreboardUI();
+            triggerSparkleBurst(window.innerWidth / 2, window.innerHeight / 2, 20);
         }
-    }
-</script>
 
+        // Load the image model and setup the webcam
+        async function init() {
+            isGameOver = false;
+            const startBtn = document.getElementById("start-btn");
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AI 모델 로딩 중...';
+            startBtn.setAttribute("onclick", ""); // Disable click while loading
+
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            try {
+                // Load the model and metadata
+                model = await tmImage.load(modelURL, metadataURL);
+                maxPredictions = model.getTotalClasses();
+
+                startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 카메라 연결 중...';
+
+                // Setup webcam
+                const flip = true; // whether to flip the webcam
+                webcam = new tmImage.Webcam(280, 280, flip); // width, height, flip
+                await webcam.setup(); // request access to the webcam
+                await webcam.play();
+                window.requestAnimationFrame(loop);
+
+                // Hide placeholder and result overlay if visible
+                document.getElementById("webcam-placeholder").style.display = 'none';
+                document.getElementById("webcam-result-overlay").style.display = 'none';
+                
+                const webcamContainer = document.getElementById("webcam-container");
+                webcamContainer.innerHTML = '';
+                webcamContainer.appendChild(webcam.canvas);
+                
+                // Style canvas
+                webcam.canvas.style.borderRadius = "20px";
+                webcam.canvas.style.width = "100%";
+                webcam.canvas.style.height = "100%";
+                webcam.canvas.style.objectFit = "cover";
+
+                labelContainer = document.getElementById("label-container");
+                labelContainer.innerHTML = '';
+                for (let i = 0; i < maxPredictions; i++) {
+                    const div = document.createElement("div");
+                    div.className = "prediction-item";
+                    labelContainer.appendChild(div);
+                }
+
+                startBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> 게임 실행 중';
+                
+                // Trigger burst at center
+                triggerSparkleBurst(window.innerWidth / 2, window.innerHeight / 2, 25);
+            } catch (error) {
+                console.error(error);
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> 시작하기';
+                startBtn.setAttribute("onclick", "init()");
+                alert("웹캠 접근 권한을 획득하지 못했거나 인공지능 모델을 불러오는 데 실패했습니다.");
+            }
+        }
+
+        async function loop() {
+            if (isGameOver) return;
+            webcam.update(); // update the webcam frame
+            await predict();
+            if (!isGameOver) {
+                window.requestAnimationFrame(loop);
+            }
+        }
+
+        // run the webcam image through the image model
+        async function predict() {
+            // predict can take in an image, video or canvas html element
+            const prediction = await model.predict(webcam.canvas);
+            
+            // Find the index with the highest probability to highlight it
+            let maxIndex = 0;
+            let maxProb = 0;
+            for (let i = 0; i < maxPredictions; i++) {
+                if (prediction[i].probability > maxProb) {
+                    maxProb = prediction[i].probability;
+                    maxIndex = i;
+                }
+            }
+
+            for (let i = 0; i < maxPredictions; i++) {
+                const className = prediction[i].className;
+                const probability = prediction[i].probability;
+                const percentage = Math.round(probability * 100);
+
+                let displayTitle = className;
+                let iconHtml = '';
+
+                const lowerClass = className.toLowerCase();
+                if (lowerClass.includes('rock') || lowerClass.includes('바위') || lowerClass.includes('주먹')) {
+                    displayTitle = '바위';
+                    iconHtml = '<i class="fa-solid fa-hand-fist" style="color: #ef4444;"></i>';
+                } else if (lowerClass.includes('paper') || lowerClass.includes('보')) {
+                    displayTitle = '보';
+                    iconHtml = '<i class="fa-solid fa-hand" style="color: #3b82f6;"></i>';
+                } else if (lowerClass.includes('scissors') || lowerClass.includes('가위')) {
+                    displayTitle = '가위';
+                    iconHtml = '<i class="fa-solid fa-hand-scissors" style="color: #10b981;"></i>';
+                } else {
+                    iconHtml = '<i class="fa-solid fa-question" style="color: #8b5cf6;"></i>';
+                }
+
+                const isActive = (i === maxIndex && probability > 0.3) ? 'active-prediction' : '';
+
+                labelContainer.childNodes[i].innerHTML = `
+                    <div class="result-row ${isActive}">
+                        <div class="result-label-group">
+                            <span class="result-icon">${iconHtml}</span>
+                            <span class="result-name">${displayTitle}</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <span class="result-value">${percentage}%</span>
+                    </div>
+                `;
+            }
+
+            // Check if highest prediction is >= 90% and it is a valid game option (가위, 바위, 보)
+            const winningClass = prediction[maxIndex].className;
+            const lowerClass = winningClass.toLowerCase();
+            const isValidOption = lowerClass.includes('rock') || lowerClass.includes('바위') || lowerClass.includes('주먹') ||
+                                  lowerClass.includes('paper') || lowerClass.includes('보') ||
+                                  lowerClass.includes('scissors') || lowerClass.includes('가위');
+
+            if (maxProb >= 0.90 && isValidOption) {
+                isGameOver = true;
+                webcam.stop(); // Turn off camera stream
+
+                let finalIcon = '';
+                let finalName = '';
+
+                if (lowerClass.includes('rock') || lowerClass.includes('바위') || lowerClass.includes('주먹')) {
+                    finalName = '바위';
+                    finalIcon = '<i class="fa-solid fa-hand-fist" style="color: #ef4444;"></i>';
+                } else if (lowerClass.includes('paper') || lowerClass.includes('보')) {
+                    finalName = '보';
+                    finalIcon = '<i class="fa-solid fa-hand" style="color: #3b82f6;"></i>';
+                } else if (lowerClass.includes('scissors') || lowerClass.includes('가위')) {
+                    finalName = '가위';
+                    finalIcon = '<i class="fa-solid fa-hand-scissors" style="color: #10b981;"></i>';
+                }
+
+                // Generate computer's random choice
+                const choices = ['가위', '바위', '보'];
+                const computerChoice = choices[Math.floor(Math.random() * 3)];
+                let compIcon = '';
+
+                if (computerChoice === '가위') {
+                    compIcon = '<i class="fa-solid fa-hand-scissors" style="color: #10b981;"></i>';
+                } else if (computerChoice === '바위') {
+                    compIcon = '<i class="fa-solid fa-hand-fist" style="color: #ef4444;"></i>';
+                } else {
+                    compIcon = '<i class="fa-solid fa-hand" style="color: #3b82f6;"></i>';
+                }
+
+                // Determine winner
+                let resultMessage = '';
+                let resultClass = '';
+                if (finalName === computerChoice) {
+                    resultMessage = '무승부! 🤝';
+                } else if (
+                    (finalName === '바위' && computerChoice === '가위') ||
+                    (finalName === '가위' && computerChoice === '보') ||
+                    (finalName === '보' && computerChoice === '바위')
+                ) {
+                    resultMessage = '나의 승리! 🎉';
+                    playerScore++;
+                    localStorage.setItem('rps_player_score', playerScore);
+                } else {
+                    resultMessage = '컴퓨터 승리! 😢';
+                    computerScore++;
+                    localStorage.setItem('rps_computer_score', computerScore);
+                }
+
+                // Update scoreboard
+                updateScoreboardUI();
+
+                // Display result overlay
+                const overlay = document.getElementById("webcam-result-overlay");
+                document.getElementById("player-fighter-icon").innerHTML = finalIcon;
+                document.getElementById("computer-fighter-icon").innerHTML = compIcon;
+                document.getElementById("battle-result-text").innerHTML = `${resultMessage}<br><span style="font-size:0.9rem; font-weight:normal; opacity:0.8;">나: ${finalName} vs 컴퓨터: ${computerChoice}</span>`;
+                overlay.style.display = "flex";
+
+                // Trigger celebration particle burst
+                const rect = document.getElementById("webcam-box").getBoundingClientRect();
+                triggerSparkleBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 45);
+
+                // Enable start button to act as a "Play Again" button
+                const startBtn = document.getElementById("start-btn");
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> 다음 판 하기';
+                startBtn.setAttribute("onclick", "restartGame()");
+            }
+        }
+
+        async function restartGame() {
+            isGameOver = false;
+            
+            // Hide result overlay
+            document.getElementById("webcam-result-overlay").style.display = "none";
+            
+            // Restore placeholder
+            document.getElementById("webcam-placeholder").style.display = "flex";
+            document.getElementById("webcam-container").innerHTML = '';
+            
+            // Reset start button
+            const startBtn = document.getElementById("start-btn");
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fa-solid fa-play"></i> 시작하기';
+            startBtn.setAttribute("onclick", "init()");
+
+            // Reset prediction rows to 0% placeholders
+            const labelContainer = document.getElementById("label-container");
+            labelContainer.innerHTML = `
+                <div class="result-row">
+                    <div class="result-label-group">
+                        <span class="result-icon"><i class="fa-solid fa-hand-scissors" style="color:#10b981;"></i></span>
+                        <span class="result-name">가위</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="result-value">0%</span>
+                </div>
+                <div class="result-row">
+                    <div class="result-label-group">
+                        <span class="result-icon"><i class="fa-solid fa-hand-fist" style="color:#ef4444;"></i></span>
+                        <span class="result-name">바위</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="result-value">0%</span>
+                </div>
+                <div class="result-row">
+                    <div class="result-label-group">
+                        <span class="result-icon"><i class="fa-solid fa-hand" style="color:#3b82f6;"></i></span>
+                        <span class="result-name">보</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="result-value">0%</span>
+                </div>
+            `;
+        }
+    </script>
+
+    <!-- Theme Switcher and Interactive Canvas Particles (matching portfolio) -->
+    <script>
+        // Theme Switcher Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
+            document.body.removeAttribute('data-theme');
+            themeIcon.className = 'fa-solid fa-moon';
+        } else {
+            document.body.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+            triggerSparkleBurst(window.innerWidth / 2, window.innerHeight / 2, 35);
+        });
+
+        // Particle Canvas Logic
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+
+        function getParticleColors() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                return ['#a78bfa', '#f472b6', '#c084fc', '#818cf8', '#ec4899', '#6366f1'];
+            } else {
+                return ['#0ea5e9', '#10b981', '#38bdf8', '#34d399', '#059669', '#0284c7'];
+            }
+        }
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, vx, vy, size, color, alpha, fade, burst) {
+                const themeColors = getParticleColors();
+                this.x = x || Math.random() * window.innerWidth;
+                this.y = y || Math.random() * window.innerHeight;
+                this.vx = vx !== undefined ? vx : (Math.random() - 0.5) * 1.2;
+                this.vy = vy !== undefined ? vy : (Math.random() - 0.5) * 1.2;
+                this.size = size || Math.random() * 2.5 + 1;
+                this.color = color || themeColors[Math.floor(Math.random() * themeColors.length)];
+                this.baseAlpha = alpha || Math.random() * 0.3 + 0.1;
+                this.alpha = this.baseAlpha;
+                this.fade = fade || 0.002 + Math.random() * 0.003;
+                this.phase = Math.random() * Math.PI * 2;
+                this.burst = burst || false;
+                this.history = [];
+            }
+
+            draw() {
+                if (this.burst && this.history.length > 1) {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha * 0.3;
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = this.size * 0.4;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(this.history[0].x, this.history[0].y);
+                    for (let i = 1; i < this.history.length; i++) {
+                        ctx.lineTo(this.history[i].x, this.history[i].y);
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                ctx.save();
+                let drawAlpha = this.alpha;
+                if (this.burst && this.alpha < 0.6) {
+                    drawAlpha *= (Math.random() * 0.4 + 0.6);
+                }
+                ctx.globalAlpha = drawAlpha;
+
+                if (this.burst) {
+                    ctx.shadowBlur = this.size * 3;
+                    ctx.shadowColor = this.color;
+                    ctx.fillStyle = this.color;
+
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y - this.size);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x + this.size, this.y);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x, this.y + this.size);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x - this.size, this.y);
+                    ctx.quadraticCurveTo(this.x, this.y, this.x, this.y - this.size);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.shadowBlur = 0;
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.moveTo(this.x - this.size * 0.6, this.y);
+                    ctx.lineTo(this.x + this.size * 0.6, this.y);
+                    ctx.moveTo(this.x, this.y - this.size * 0.6);
+                    ctx.lineTo(this.x, this.y + this.size * 0.6);
+                    ctx.stroke();
+                } else {
+                    ctx.shadowBlur = this.size * 2;
+                    ctx.shadowColor = this.color;
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+
+            update() {
+                if (this.burst) {
+                    this.history.push({ x: this.x, y: this.y });
+                    if (this.history.length > 4) {
+                        this.history.shift();
+                    }
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (!this.burst) {
+                    this.alpha = this.baseAlpha + Math.sin(Date.now() * 0.003 + this.phase) * 0.08;
+                    if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
+                    if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
+                } else {
+                    this.vx *= 0.95;
+                    this.vy *= 0.95;
+                    this.vy += 0.08;
+                    this.alpha -= this.fade;
+                }
+            }
+        }
+
+        // Initialize ambient particles
+        for (let i = 0; i < 30; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+            const currentTheme = document.body.getAttribute('data-theme');
+            ctx.globalCompositeOperation = currentTheme === 'dark' ? 'screen' : 'source-over';
+
+            particles = particles.filter(p => p.alpha > 0);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            const ambientCount = particles.filter(p => !p.burst).length;
+            if (ambientCount < 30) {
+                particles.push(new Particle());
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        function triggerSparkleBurst(clientX, clientY, count = 20) {
+            const themeColors = getParticleColors();
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 1.5;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                const size = Math.random() * 4 + 2;
+                const color = themeColors[Math.floor(Math.random() * themeColors.length)];
+                const fade = 0.015 + Math.random() * 0.015;
+
+                const p = new Particle(clientX, clientY, vx, vy, size, color, 1.0, fade, true);
+                particles.push(p);
+            }
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target.closest('.controls') || e.target.closest('.start-btn') || e.target.closest('.glass-card') || e.target.closest('.nav-btn') || e.target.closest('.restart-overlay-btn') || e.target.closest('.reset-score-btn')) return;
+            triggerSparkleBurst(e.clientX, e.clientY, 15);
+        });
+    </script>
 </body>
+
 </html>
