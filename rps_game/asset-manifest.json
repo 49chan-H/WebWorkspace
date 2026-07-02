@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/WebWorkspace/rps_game/static/css/main.ad543fec.css",
+    "main.js": "/WebWorkspace/rps_game/static/js/main.64a497ad.js",
+    "static/js/453.3ee4e66e.chunk.js": "/WebWorkspace/rps_game/static/js/453.3ee4e66e.chunk.js",
+    "index.html": "/WebWorkspace/rps_game/index.html",
+    "main.ad543fec.css.map": "/WebWorkspace/rps_game/static/css/main.ad543fec.css.map",
+    "main.64a497ad.js.map": "/WebWorkspace/rps_game/static/js/main.64a497ad.js.map",
+    "453.3ee4e66e.chunk.js.map": "/WebWorkspace/rps_game/static/js/453.3ee4e66e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ad543fec.css",
+    "static/js/main.64a497ad.js"
+  ]
+}
