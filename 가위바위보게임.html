@@ -893,7 +893,7 @@
                 <!-- Live AI Predictions Area -->
                 <div class="results-area" id="label-container">
                     <!-- Placeholder rows before game starts -->
-                    <div class="result-row">
+                    <div class="result-row" id="row-가위">
                         <div class="result-label-group">
                             <span class="result-icon"><i class="fa-solid fa-hand-scissors" style="color:#10b981;"></i></span>
                             <span class="result-name">가위</span>
@@ -903,7 +903,7 @@
                         </div>
                         <span class="result-value">0%</span>
                     </div>
-                    <div class="result-row">
+                    <div class="result-row" id="row-바위">
                         <div class="result-label-group">
                             <span class="result-icon"><i class="fa-solid fa-hand-fist" style="color:#ef4444;"></i></span>
                             <span class="result-name">바위</span>
@@ -913,10 +913,20 @@
                         </div>
                         <span class="result-value">0%</span>
                     </div>
-                    <div class="result-row">
+                    <div class="result-row" id="row-보">
                         <div class="result-label-group">
                             <span class="result-icon"><i class="fa-solid fa-hand" style="color:#3b82f6;"></i></span>
                             <span class="result-name">보</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="result-value">0%</span>
+                    </div>
+                    <div class="result-row" id="row-선택하지않음">
+                        <div class="result-label-group">
+                            <span class="result-icon"><i class="fa-solid fa-question" style="color:#8b5cf6;"></i></span>
+                            <span class="result-name">선택하지않음</span>
                         </div>
                         <div class="progress-bar-bg">
                             <div class="progress-bar-fill" style="width: 0%"></div>
@@ -1028,12 +1038,7 @@
                 webcam.canvas.style.objectFit = "cover";
 
                 labelContainer = document.getElementById("label-container");
-                labelContainer.innerHTML = '';
-                for (let i = 0; i < maxPredictions; i++) {
-                    const div = document.createElement("div");
-                    div.className = "prediction-item";
-                    labelContainer.appendChild(div);
-                }
+                resetPredictionRows();
 
                 startBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> 게임 실행 중';
                 
@@ -1072,42 +1077,59 @@
                 }
             }
 
+            // Initialize probabilities for each display label
+            const labelProbabilities = {
+                '가위': 0,
+                '바위': 0,
+                '보': 0,
+                '선택하지않음': 0
+            };
+
             for (let i = 0; i < maxPredictions; i++) {
                 const className = prediction[i].className;
                 const probability = prediction[i].probability;
-                const percentage = Math.round(probability * 100);
-
-                let displayTitle = className;
-                let iconHtml = '';
-
                 const lowerClass = className.toLowerCase();
+
+                let key = '선택하지않음';
                 if (lowerClass.includes('rock') || lowerClass.includes('바위') || lowerClass.includes('주먹')) {
-                    displayTitle = '바위';
-                    iconHtml = '<i class="fa-solid fa-hand-fist" style="color: #ef4444;"></i>';
+                    key = '바위';
                 } else if (lowerClass.includes('paper') || lowerClass.includes('보')) {
-                    displayTitle = '보';
-                    iconHtml = '<i class="fa-solid fa-hand" style="color: #3b82f6;"></i>';
+                    key = '보';
                 } else if (lowerClass.includes('scissors') || lowerClass.includes('가위')) {
-                    displayTitle = '가위';
-                    iconHtml = '<i class="fa-solid fa-hand-scissors" style="color: #10b981;"></i>';
-                } else {
-                    iconHtml = '<i class="fa-solid fa-question" style="color: #8b5cf6;"></i>';
+                    key = '가위';
                 }
+                
+                labelProbabilities[key] = probability;
+            }
 
-                const isActive = (i === maxIndex && probability > 0.3) ? 'active-prediction' : '';
+            // Determine active key with highest probability > 0.3
+            let activeKey = '';
+            let maxKeyProb = 0.3;
+            for (const [key, prob] of Object.entries(labelProbabilities)) {
+                if (prob > maxKeyProb) {
+                    maxKeyProb = prob;
+                    activeKey = key;
+                }
+            }
 
-                labelContainer.childNodes[i].innerHTML = `
-                    <div class="result-row ${isActive}">
-                        <div class="result-label-group">
-                            <span class="result-icon">${iconHtml}</span>
-                            <span class="result-name">${displayTitle}</span>
-                        </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill" style="width: ${percentage}%"></div>
-                        </div>
-                        <span class="result-value">${percentage}%</span>
-                    </div>
-                `;
+            // Update DOM rows in-place
+            for (const [key, prob] of Object.entries(labelProbabilities)) {
+                const row = document.getElementById(`row-${key}`);
+                if (row) {
+                    const percentage = Math.round(prob * 100);
+                    
+                    if (key === activeKey) {
+                        row.classList.add('active-prediction');
+                    } else {
+                        row.classList.remove('active-prediction');
+                    }
+                    
+                    const bar = row.querySelector('.progress-bar-fill');
+                    if (bar) bar.style.width = `${percentage}%`;
+                    
+                    const valSpan = row.querySelector('.result-value');
+                    if (valSpan) valSpan.innerText = `${percentage}%`;
+                }
             }
 
             // Check if highest prediction is >= 90% and it is a valid game option (가위, 바위, 보)
@@ -1119,7 +1141,7 @@
 
             if (maxProb >= 0.90 && isValidOption) {
                 isGameOver = true;
-                webcam.stop(); // Turn off camera stream
+                // Keep the camera stream ON continuously
 
                 let finalIcon = '';
                 let finalName = '';
@@ -1189,57 +1211,48 @@
             }
         }
 
+        function resetPredictionRows() {
+            const keys = ['가위', '바위', '보', '선택하지않음'];
+            keys.forEach(key => {
+                const row = document.getElementById(`row-${key}`);
+                if (row) {
+                    row.classList.remove('active-prediction');
+                    const bar = row.querySelector('.progress-bar-fill');
+                    if (bar) bar.style.width = '0%';
+                    const valSpan = row.querySelector('.result-value');
+                    if (valSpan) valSpan.innerText = '0%';
+                }
+            });
+        }
+
         async function restartGame() {
             isGameOver = false;
             
             // Hide result overlay
             document.getElementById("webcam-result-overlay").style.display = "none";
             
-            // Restore placeholder
-            document.getElementById("webcam-placeholder").style.display = "flex";
-            document.getElementById("webcam-container").innerHTML = '';
-            
-            // Reset start button
+            // Keep start button state as 'running'
             const startBtn = document.getElementById("start-btn");
-            startBtn.disabled = false;
-            startBtn.innerHTML = '<i class="fa-solid fa-play"></i> 시작하기';
-            startBtn.setAttribute("onclick", "init()");
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> 게임 실행 중';
+            startBtn.setAttribute("onclick", "");
 
             // Reset prediction rows to 0% placeholders
-            const labelContainer = document.getElementById("label-container");
-            labelContainer.innerHTML = `
-                <div class="result-row">
-                    <div class="result-label-group">
-                        <span class="result-icon"><i class="fa-solid fa-hand-scissors" style="color:#10b981;"></i></span>
-                        <span class="result-name">가위</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: 0%"></div>
-                    </div>
-                    <span class="result-value">0%</span>
-                </div>
-                <div class="result-row">
-                    <div class="result-label-group">
-                        <span class="result-icon"><i class="fa-solid fa-hand-fist" style="color:#ef4444;"></i></span>
-                        <span class="result-name">바위</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: 0%"></div>
-                    </div>
-                    <span class="result-value">0%</span>
-                </div>
-                <div class="result-row">
-                    <div class="result-label-group">
-                        <span class="result-icon"><i class="fa-solid fa-hand" style="color:#3b82f6;"></i></span>
-                        <span class="result-name">보</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: 0%"></div>
-                    </div>
-                    <span class="result-value">0%</span>
-                </div>
-            `;
+            resetPredictionRows();
+
+            // Resume game prediction loop with the already active camera stream
+            window.requestAnimationFrame(loop);
         }
+
+        // Add Enter key event listener to trigger restartGame
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const overlay = document.getElementById("webcam-result-overlay");
+                if (isGameOver && overlay && overlay.style.display === "flex") {
+                    restartGame();
+                }
+            }
+        });
     </script>
 
     <!-- Theme Switcher and Interactive Canvas Particles (matching portfolio) -->
